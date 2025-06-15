@@ -1,7 +1,7 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
 // Verify Token
-exports.validateToken = (req, res, next) => {
+const validateToken = (req, res, next) => {
   const bearerHeader = req.headers["authorization"];
   if (typeof bearerHeader == "undefined") res.sendStatus(403);
 
@@ -16,3 +16,5 @@ exports.validateToken = (req, res, next) => {
     res.sendStatus(403);
   }
 };
+
+export default validateToken;

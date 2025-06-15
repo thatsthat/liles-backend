@@ -1,12 +1,12 @@
-const asyncHandler = require("express-async-handler");
-const jwt = require("jsonwebtoken");
-const { body, validationResult } = require("express-validator");
-const bcrypt = require("bcryptjs");
-const { PrismaClient } = require("../generated/client");
+import jwt from "jsonwebtoken";
+import { body, validationResult } from "express-validator";
+import bcrypt from "bcryptjs";
+import { PrismaClient } from "../generated/client";
+import { Request, Response, NextFunction } from "express";
 const prisma = new PrismaClient();
 
 // Handle Post create on POST.
-exports.signup = [
+const signup = [
   // Validate and sanitize fields.
   body("email", "Please provide a valid email address.")
     .trim()
@@ -36,34 +36,36 @@ exports.signup = [
     .escape(),
 
   // Process request after validation and sanitization.
-  asyncHandler(async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
       // There are errors.
-      return res.status(400).json({ error: errors.array()[0].msg });
+      res.status(400).json({ error: errors.array()[0].msg });
     } else {
       // Signup data is valid. Proceed with signup
       try {
         bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
-          await prisma.usuari.create({
-            data: {
-              nom: req.body.name,
-              correu: req.body.email,
-              contrassenya: hashedPassword,
-            },
-          });
+          if (typeof hashedPassword === "string") {
+            await prisma.usuari.create({
+              data: {
+                nom: req.body.name,
+                correu: req.body.email,
+                contrassenya: hashedPassword,
+              },
+            });
+          }
         });
         res.json("Sign Up Completed!");
       } catch (err) {
-        return next(err);
+        next(err);
       }
     }
-  }),
+  },
 ];
 
-exports.login = [
+const login = [
   // Validate and sanitize fields.
   body("email", "Please provide an email and password")
     .trim()
@@ -75,18 +77,18 @@ exports.login = [
     .escape(),
 
   // Process request after validation and sanitization.
-  asyncHandler(async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.status(400).json({ error: errors.array()[0].msg });
+      res.status(400).json({ error: errors.array()[0].msg });
     } else {
       // Data from form is valid. Proceed with authentication
       next();
     }
-  }),
-  asyncHandler(async (req, res, next) => {
+  },
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = await prisma.usuari.findUnique({
         where: {
@@ -95,26 +97,33 @@ exports.login = [
       });
 
       if (!user) {
-        return res.status(403).json({ error: "Incorrect username" });
+        res.status(403).json({ error: "Incorrect username" });
       }
-      const match = await bcrypt.compare(req.body.password, user.contrassenya);
+      var match = false;
+      if (user) {
+        match = await bcrypt.compare(req.body.password, user.contrassenya);
+      }
       if (!match) {
         // passwords do not match!
-        return res.status(403).json({ error: "Incorrect password" });
+        res.status(403).json({ error: "Incorrect password" });
       } else {
         const tokn = jwt.sign(
           { user },
           "iepiep",
           { expiresIn: "3600s" },
           (err, token) => {
-            return res.json({
+            res.json({
               token,
             });
           }
         );
       }
     } catch (err) {
-      return next(err);
+      next(err);
     }
-  }),
+  },
 ];
+
+const user = { signup, login };
+
+export default user;
