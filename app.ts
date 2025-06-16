@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 import cors from "cors";
 import publicRouter from "./routes/public";
 import privateRouter from "./routes/private";
-import validateToken from "./middleware/auth";
+import { validateToken } from "./middleware/auth";
 
 var app = express();
 app.use(logger("dev"));
@@ -19,4 +19,4 @@ app.use(cors({ origin: process.env.ORIGIN }));
 app.use("/", publicRouter);
 app.use("/private", validateToken, privateRouter);
 
-module.exports = app;
+export default app;

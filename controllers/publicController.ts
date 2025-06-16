@@ -6,7 +6,7 @@ import { Request, Response, NextFunction } from "express";
 const prisma = new PrismaClient();
 
 // Handle Post create on POST.
-const signup = [
+export const signup = [
   // Validate and sanitize fields.
   body("email", "Please provide a valid email address.")
     .trim()
@@ -65,7 +65,7 @@ const signup = [
   },
 ];
 
-const login = [
+export const login = [
   // Validate and sanitize fields.
   body("email", "Please provide an email and password")
     .trim()
@@ -123,7 +123,3 @@ const login = [
     }
   },
 ];
-
-const user = { signup, login };
-
-export default user;

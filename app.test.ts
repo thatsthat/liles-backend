@@ -8,7 +8,7 @@ import { beforeAll, test, expect } from "vitest";
 testApp.use(express.urlencoded({ extended: false }));
 testApp.use("/", app);
 
-var token = [];
+var token = "";
 
 beforeAll(async () => {
   const response = await request(testApp)
@@ -39,4 +39,14 @@ test("Llista de castells", async () => {
   expect(res.statusCode).toBe(200);
   expect(res.body).toBeInstanceOf(Array);
   expect(res.body).toHaveLength(4236);
+});
+
+test("Llista de temporades", async () => {
+  const res = await request(testApp)
+    .get("/private/llista-temporades")
+    .auth(token, { type: "bearer" })
+    .set("Content-Type", "application/json");
+  expect(res.statusCode).toBe(200);
+  expect(res.body).toBeInstanceOf(Array);
+  expect(res.body).toHaveLength(34);
 });

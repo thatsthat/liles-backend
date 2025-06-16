@@ -15,7 +15,7 @@ const prisma = new PrismaClient();
   return res.send(message);
 }; */
 
-const llistaActuacions = async (
+export const llistaActuacions = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -27,18 +27,34 @@ const llistaActuacions = async (
   });
   res.send(actuacions);
 };
-const llistaCastells = async (
+
+export const llistaCastells = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const actuacions = await prisma.castell.findMany({
+  const castells = await prisma.castell.findMany({
     orderBy: {
       id: "desc",
     },
   });
-  res.send(actuacions);
+  res.send(castells);
 };
-const privatec = { llistaCastells, llistaActuacions };
 
-export default privatec;
+export const llistaTemporades = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const actuacions = await prisma.actuacio.findMany({
+    orderBy: {
+      data: "desc",
+    },
+    select: {
+      data: true,
+    },
+  });
+  const anys = actuacions.map((a) => new Date(a.data).getFullYear());
+  const temporades = [...new Set(anys)];
+  res.send(temporades);
+};

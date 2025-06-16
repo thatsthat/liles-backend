@@ -1,9 +1,9 @@
 import express from "express";
 var publicRouter = express.Router();
 
-import user from "../controllers/publicController";
+import { login, signup } from "../controllers/publicController";
 
-publicRouter.post("/login", user.login);
-publicRouter.post("/signup", user.signup);
+publicRouter.post("/login", login);
+publicRouter.post("/signup", signup);
 
 export default publicRouter;
