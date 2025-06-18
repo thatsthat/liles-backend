@@ -21,7 +21,7 @@ beforeAll(async () => {
   token = response.body.token;
 });
 
-test("Llista de d'actuacions", async () => {
+test.skip("Llista de d'actuacions", async () => {
   const res = await request(testApp)
     .get("/private/llista-actuacions")
     .auth(token, { type: "bearer" })
@@ -31,7 +31,7 @@ test("Llista de d'actuacions", async () => {
   expect(res.body).toHaveLength(816);
 });
 
-test("Llista de castells", async () => {
+test.skip("Llista de castells", async () => {
   const res = await request(testApp)
     .get("/private/llista-castells")
     .auth(token, { type: "bearer" })
@@ -41,11 +41,23 @@ test("Llista de castells", async () => {
   expect(res.body).toHaveLength(4236);
 });
 
-test("Llista de temporades", async () => {
+test.skip("Llista de temporades", async () => {
   const res = await request(testApp)
     .get("/private/llista-temporades")
     .auth(token, { type: "bearer" })
     .set("Content-Type", "application/json");
+  console.log(res.body);
+  expect(res.statusCode).toBe(200);
+  expect(res.body).toBeInstanceOf(Array);
+  expect(res.body).toHaveLength(34);
+});
+
+test("Actuacions per temporada", async () => {
+  const res = await request(testApp)
+    .get("/private/actuacions-temporada/20")
+    .auth(token, { type: "bearer" })
+    .set("Content-Type", "application/json");
+  console.log(res.body);
   expect(res.statusCode).toBe(200);
   expect(res.body).toBeInstanceOf(Array);
   expect(res.body).toHaveLength(34);

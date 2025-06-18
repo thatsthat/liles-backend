@@ -58,3 +58,26 @@ export const llistaTemporades = async (
   const temporades = [...new Set(anys)];
   res.send(temporades);
 };
+
+export const actuacionsTemporada = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const year = req.params.year;
+  var fullYear = "";
+  if (year.charAt(0) === "9") fullYear = "19" + year;
+  else fullYear = "20" + year;
+  const actuacions = await prisma.actuacio.findMany({
+    where: {
+      data: {
+        gte: new Date(fullYear + "-01-01"),
+        lte: new Date(fullYear + "-12-31"),
+      },
+    },
+    orderBy: {
+      data: "asc",
+    },
+  });
+  res.send(actuacions);
+};
