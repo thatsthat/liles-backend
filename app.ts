@@ -14,9 +14,11 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+console.log(process.env.ORIGIN);
 app.use(cors({ origin: process.env.ORIGIN }));
 
 app.use("/", publicRouter);
-app.use("/private", validateToken, privateRouter);
+app.use("/private", privateRouter);
+//app.use("/private", validateToken, privateRouter);
 
-export default app;
+module.exports = app;

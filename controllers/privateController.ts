@@ -54,7 +54,9 @@ export const llistaTemporades = async (
       data: true,
     },
   });
-  const anys = actuacions.map((a) => new Date(a.data).getFullYear());
+  const anys = actuacions.map(
+    (a) => new Date(a.data).toLocaleDateString("en", { year: "numeric" }) //{ year: "2-digit" })
+  );
   const temporades = [...new Set(anys)];
   res.send(temporades);
 };
@@ -66,8 +68,10 @@ export const actuacionsTemporada = async (
 ) => {
   const year = req.params.year;
   var fullYear = "";
-  if (year.charAt(0) === "9") fullYear = "19" + year;
-  else fullYear = "20" + year;
+  if (year.length === 2) {
+    if (year.charAt(0) === "9") fullYear = "19" + year;
+    else fullYear = "20" + year;
+  } else fullYear = year;
   const actuacions = await prisma.actuacio.findMany({
     where: {
       data: {
@@ -77,6 +81,9 @@ export const actuacionsTemporada = async (
     },
     orderBy: {
       data: "asc",
+    },
+    include: {
+      castells: true,
     },
   });
   res.send(actuacions);

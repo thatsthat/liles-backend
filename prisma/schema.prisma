@@ -14,6 +14,7 @@ model Actuacio {
   dataHora DateTime?
   lloc     String?
   ciutat   String
+  nom      String
   castells Castell[] @relation("castellsPortats")
 }
 

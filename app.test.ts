@@ -41,7 +41,7 @@ test.skip("Llista de castells", async () => {
   expect(res.body).toHaveLength(4236);
 });
 
-test.skip("Llista de temporades", async () => {
+test("Llista de temporades", async () => {
   const res = await request(testApp)
     .get("/private/llista-temporades")
     .auth(token, { type: "bearer" })
@@ -49,12 +49,12 @@ test.skip("Llista de temporades", async () => {
   console.log(res.body);
   expect(res.statusCode).toBe(200);
   expect(res.body).toBeInstanceOf(Array);
-  expect(res.body).toHaveLength(34);
+  expect(res.body).toHaveLength(35);
 });
 
-test("Actuacions per temporada", async () => {
+test.skip("Actuacions per temporada", async () => {
   const res = await request(testApp)
-    .get("/private/actuacions-temporada/20")
+    .get("/private/actuacions-temporada/10")
     .auth(token, { type: "bearer" })
     .set("Content-Type", "application/json");
   console.log(res.body);
