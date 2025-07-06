@@ -83,3 +83,11 @@ PATCH /articles/:id   # Toggle article published status
 
 // GET request for list of all BookInstance.
 /bookinstances
+
+
+
+/actuacio/
+/castell/
+/imatge/
+/cronica/
+/usuari/

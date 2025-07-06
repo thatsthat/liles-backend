@@ -41,7 +41,7 @@ test.skip("Llista de castells", async () => {
   expect(res.body).toHaveLength(4236);
 });
 
-test("Llista de temporades", async () => {
+test.skip("Llista de temporades", async () => {
   const res = await request(testApp)
     .get("/private/llista-temporades")
     .auth(token, { type: "bearer" })
@@ -52,13 +52,40 @@ test("Llista de temporades", async () => {
   expect(res.body).toHaveLength(35);
 });
 
-test.skip("Actuacions per temporada", async () => {
+test("Actuacions per temporada", async () => {
   const res = await request(testApp)
     .get("/private/actuacions-temporada/10")
+    .auth(token, { type: "bearer" })
+    .set("Content-Type", "application/json");
+  console.log(res.body[0]);
+  expect(res.statusCode).toBe(200);
+  expect(res.body).toBeInstanceOf(Array);
+  expect(res.body).toHaveLength(34);
+});
+
+test.skip("Resultats de castells", async () => {
+  const res = await request(testApp)
+    .get("/private/resultats-castells/")
     .auth(token, { type: "bearer" })
     .set("Content-Type", "application/json");
   console.log(res.body);
   expect(res.statusCode).toBe(200);
   expect(res.body).toBeInstanceOf(Array);
-  expect(res.body).toHaveLength(34);
+  expect(res.body).toHaveLength(10);
+});
+
+test.skip("Afegeix un castell", async () => {
+  const castell = {
+    nom: "3de7",
+    resultat: "Descarregat",
+    actuacioId: 10,
+  };
+  const res = await request(testApp)
+    .post("/private")
+    .auth(token, { type: "bearer" })
+    .set("Content-Type", "application/json")
+    .send(castell);
+  console.log(res.body);
+  expect(res.statusCode).toBe(200);
+  expect(res.body).toMatchObject(castell);
 });

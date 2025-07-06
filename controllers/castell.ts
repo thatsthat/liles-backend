@@ -42,7 +42,7 @@ const nomsCastell = [
 
 const nomsResultats = ["Descarregat", "Carregat", "Intent desmuntat", "Intent"];
 
-export const create = [
+export const crea = [
   body("nom", "Nom del castell incorrecte").isIn(nomsCastell),
   body("resultat", "Resultat del castell incorrecte").isIn(nomsResultats),
   async (req: Request, res: Response, next: NextFunction) => {
@@ -62,20 +62,7 @@ export const create = [
   },
 ];
 
-export const llistaActuacions = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const actuacions = await prisma.actuacio.findMany({
-    orderBy: {
-      data: "desc",
-    },
-  });
-  res.send(actuacions);
-};
-
-export const llistaCastells = async (
+export const llista = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -88,65 +75,31 @@ export const llistaCastells = async (
   res.send(castells);
 };
 
-export const llistaTemporades = async (
+export const detalls = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const actuacions = await prisma.actuacio.findMany({
-    orderBy: {
-      data: "desc",
-    },
-    select: {
-      data: true,
-    },
-  });
-  const anys = actuacions.map(
-    (a) => new Date(a.data).toLocaleDateString("en", { year: "numeric" }) //{ year: "2-digit" })
-  );
-  const temporades = [...new Set(anys)];
-  res.send(temporades);
-};
-
-export const actuacionsTemporada = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const year = req.params.year;
-  var fullYear = "";
-  if (year.length === 2) {
-    if (year.charAt(0) === "9") fullYear = "19" + year;
-    else fullYear = "20" + year;
-  } else fullYear = year;
-  const actuacions = await prisma.actuacio.findMany({
+  const castell = await prisma.castell.findUnique({
     where: {
-      data: {
-        gte: new Date(fullYear + "-01-01"),
-        lte: new Date(fullYear + "-12-31"),
-      },
-    },
-    orderBy: {
-      data: "asc",
-    },
-    include: {
-      castells: true,
+      id: +req.params.id,
     },
   });
-  res.send(actuacions);
+  res.send(castell);
 };
 
-export const resultatsCastells = async (
+export const modifica = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const castells = await prisma.castell.findMany({
-    select: {
-      resultat: true,
-    },
-  });
-  const rCastells = castells.map((c) => c.resultat);
-  const resultatsCastells = [...new Set(rCastells)];
-  res.send(resultatsCastells);
+  return res.send("modifica castell");
+};
+
+export const esborra = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  return res.send("Esborra castell");
 };

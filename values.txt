@@ -1,0 +1,14 @@
+nom = ['Pde4', '5de7', '4de7',
+'3de7', 'Pde4cam', '4de7p',
+'Pde5', '5de6', '3de6',
+'4de6p', '4de6', '4de8',
+'Pd4balcó', '3de6s', '7de7',
+'2de6', '3de7p', 'Pde5s',
+'3de6p', '7de6', 'Pde4s',
+'3de7s', '2de7', '3de6sn',
+'4de6n', '4de6pn', '4de5a',
+'2de5n', '4de7n', '2de6n',
+'9de6', '5de5n', '3de5',
+'4de5'];
+
+resultat = [ 'Descarregat', 'Carregat', 'Intent desmuntat', 'Intent' ];
