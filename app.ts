@@ -9,6 +9,7 @@ import autenticacioR from "./routes/autenticacio";
 import temporadaR from "./routes/temporada";
 import actuacioR from "./routes/actuacio";
 import castellR from "./routes/castell";
+import fotoR from "./routes/foto";
 import { validateToken } from "./middleware/auth";
 
 var app = express();
@@ -23,6 +24,7 @@ app.use("/", autenticacioR);
 app.use("/temporada", temporadaR);
 app.use("/actuacio", actuacioR);
 app.use("/castell", castellR);
+app.use("/foto", fotoR);
 //app.use("/private", validateToken, privateRouter);
 
 module.exports = app;

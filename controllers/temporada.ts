@@ -37,7 +37,6 @@ export const detalls = async (
       },
     },
   });
-  console.log(temporada);
   res.send(temporada);
 };
 

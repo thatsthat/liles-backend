@@ -41,7 +41,7 @@ model Castell {
   actuacioId   Int
   resultat     String
   collaId      Int
-  tipusId      Int
+  ti    pusId      Int
   actuacio     Actuacio     @relation("castellsActuacio", fields: [actuacioId], references: [id])
   colla        Colla        @relation("castellsColla", fields: [collaId], references: [id])
   tipusCastell TipusCastell @relation("tipusCastell", fields: [tipusId], references: [id])
