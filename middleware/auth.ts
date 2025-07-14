@@ -1,13 +1,9 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
-interface AuthRequest extends Request {
-  user?: JwtPayload;
-}
-
 // Verify Token
 export function validateToken(
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ): void {

@@ -1,6 +1,7 @@
-export type User = {
+export type Usuari = {
   id?: number;
-  name: string;
-  surname: string;
+  nom: string;
+  correu: string;
   authenticationToken?: string | null;
+  contrassenya: string;
 };
