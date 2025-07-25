@@ -26,12 +26,12 @@ export const detalls = async (
       id: +req.params.id,
     },
     include: {
-      castells: { include: { colla: true, tipusCastell: true }  },
+      castells: { include: { colla: true, tipusCastell: true } },
       ciutat: true,
       colles: true,
+      fotos: true,
     },
   });
-  console.log(actuacio)
   res.send(actuacio);
 };
 

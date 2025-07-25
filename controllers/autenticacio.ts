@@ -8,12 +8,12 @@ const prisma = new PrismaClient();
 // Handle Post create on POST.
 export const signup = [
   // Validate and sanitize fields.
-  body("email", "Please provide a valid email address.")
+  body("correu", "Please provide a valid email address.")
     .trim()
     .isLength({ min: 1 })
     .isEmail()
     .escape(),
-  body("email").custom(async (value) => {
+  body("correu").custom(async (value) => {
     if (value) {
       const user = await prisma.usuari.findUnique({
         where: {
@@ -26,11 +26,11 @@ export const signup = [
       }
     }
   }),
-  body("password", "Please provide a password.")
+  body("contrassenya", "Please provide a password.")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("name", "Please provide a name for the user")
+  body("nom", "Please provide a name for the user")
     .trim()
     .isLength({ min: 1 })
     .escape(),
@@ -46,12 +46,12 @@ export const signup = [
     } else {
       // Signup data is valid. Proceed with signup
       try {
-        bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
+        bcrypt.hash(req.body.contrassenya, 10, async (err, hashedPassword) => {
           if (typeof hashedPassword === "string") {
             await prisma.usuari.create({
               data: {
-                nom: req.body.name,
-                correu: req.body.email,
+                nom: req.body.nom,
+                correu: req.body.correu,
                 contrassenya: hashedPassword,
               },
             });

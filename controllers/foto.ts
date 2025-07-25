@@ -1,41 +1,45 @@
 import { body, validationResult } from "express-validator";
 import { Request, Response, NextFunction } from "express";
 import { PrismaClient } from "../generated/client";
-const { createClient } = require("@supabase/supabase-js");
+import { createClient } from "@supabase/supabase-js";
+import { v4 as uuidv4 } from "uuid";
 const prisma = new PrismaClient();
 
 export const crea = [
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log(process.env.SUPABASE_URL);
     const supabase = createClient(
       process.env.SUPABASE_URL,
       process.env.SUPABASE_KEY
     );
-    const fileData = await supabase.storage
-      .from("imatges")
-      .upload(req.file.originalname, req.file.buffer, {
-        cacheControl: "3600",
-        upsert: false,
+
+    req.files.forEach(async function (file) {
+      console.log(file);
+      const fileName = uuidv4() + ".jpg";
+      const fileData = await supabase.storage
+        .from("imatges")
+        .upload(fileName, file.buffer, {
+          cacheControl: "3600",
+          upsert: false,
+          contentType: "image/jpeg",
+        });
+
+      const urlData = supabase.storage
+        .from("imatges")
+        .getPublicUrl(fileData.data.path);
+
+      await prisma.foto.create({
+        data: {
+          nom: fileName,
+          autorId: req.user.id,
+          actuacioId: +req.body.actuacioId,
+          collaId: +req.body.collaId,
+          castellId: +req.body.castellId,
+          url: urlData.data.publicUrl,
+        },
       });
-
-    const urlData = supabase.storage
-      .from("odin")
-      .getPublicUrl(fileData.data.path);
-
-    var parentData = {};
-    if (req.body.parentId) parentData = { connect: { id: +req.body.parentId } };
-    await prisma.file.create({
-      data: {
-        name: req.file.originalname,
-        owner: { connect: { id: req.user.id } },
-        parent: parentData,
-        url: urlData.data.publicUrl,
-      },
     });
 
-    console.log(data);
-
-    return res.json({ message: "File saved" });
+    return res.json({ message: "Fotos emmagatzemades" });
   },
 ];
 
