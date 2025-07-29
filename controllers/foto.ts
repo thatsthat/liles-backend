@@ -12,6 +12,8 @@ export const crea = [
       process.env.SUPABASE_KEY
     );
 
+    let fotosData = [];
+
     req.files.forEach(async function (file) {
       console.log(file);
       const fileName = uuidv4() + ".jpg";
@@ -27,19 +29,37 @@ export const crea = [
         .from("imatges")
         .getPublicUrl(fileData.data.path);
 
+      const fotoData = {
+        nom: fileName,
+        autorId: req.user.id,
+        actuacioId: +req.body.actuacioId,
+        collaId: +req.body.collaId,
+        castellId: +req.body.castellId,
+        url: urlData.data.publicUrl,
+      };
+
+      fotosData.push(fotoData);
+
       await prisma.foto.create({
-        data: {
-          nom: fileName,
-          autorId: req.user.id,
-          actuacioId: +req.body.actuacioId,
-          collaId: +req.body.collaId,
-          castellId: +req.body.castellId,
-          url: urlData.data.publicUrl,
-        },
+        data: fotoData,
       });
     });
+    // Check that the fotos are already related to the actuacio object
 
-    return res.json({ message: "Fotos emmagatzemades" });
+    const actuacio = await prisma.actuacio.findUnique({
+      where: {
+        id: +req.body.actuacioId,
+      },
+      include: {
+        ciutat: true,
+        colles: true,
+        fotos: true,
+      },
+    });
+
+    console.log(actuacio);
+
+    return res.json(fotosData);
   },
 ];
 
