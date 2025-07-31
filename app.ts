@@ -20,7 +20,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 //app.use(nocache());
 //app.set("etag", false);
-console.log(process.env.ORIGIN);
 app.use(cors({ origin: process.env.ORIGIN }));
 
 app.use("/", autenticacioR);
@@ -28,6 +27,5 @@ app.use("/temporada", temporadaR);
 app.use("/actuacio", actuacioR);
 app.use("/castell", castellR);
 app.use("/foto", fotoR);
-//app.use("/private", validateToken, privateRouter);
 
 module.exports = app;
