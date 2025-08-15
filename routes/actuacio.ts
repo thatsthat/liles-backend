@@ -1,14 +1,14 @@
 import express from "express";
 import { validateToken } from "../middleware/auth";
-var actuacioR = express.Router();
+var R = express.Router();
 
 // Require controller modules.
-import * as actuacioC from "../controllers/actuacio";
+import * as C from "../controllers/actuacio";
 
-actuacioR.post("/", validateToken, actuacioC.crea);
-actuacioR.get("/", actuacioC.llista);
-actuacioR.get("/:id", actuacioC.detalls);
-actuacioR.delete("/:id", validateToken, actuacioC.esborra);
-actuacioR.patch("/:id", validateToken, actuacioC.modifica);
+R.post("/", validateToken, C.crea);
+R.get("/", C.llista);
+R.get("/:id", C.detalls);
+R.delete("/:id", validateToken, C.esborra);
+R.patch("/:id", validateToken, C.modifica);
 
-export default actuacioR;
+export default R;

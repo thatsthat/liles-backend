@@ -1,9 +1,9 @@
 import express from "express";
-var autenticacioR = express.Router();
+var R = express.Router();
 
 import { login, signup } from "../controllers/autenticacio";
 
-autenticacioR.post("/login", login);
-autenticacioR.post("/signup", signup);
+R.post("/login", login);
+R.post("/signup", signup);
 
-export default autenticacioR;
+export default R;

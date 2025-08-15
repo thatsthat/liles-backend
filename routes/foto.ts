@@ -4,16 +4,16 @@ import { validateToken } from "../middleware/auth";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-var fotoR = express.Router();
+var R = express.Router();
 
 // Require controller modules.
-import * as fotoC from "../controllers/foto";
+import * as C from "../controllers/foto";
 
-fotoR.post("/", validateToken, upload.array("avatar"), fotoC.crea);
-//fotoR.post("/", upload.single("avatar"), fotoC.crea);
-fotoR.get("/", fotoC.llista);
-fotoR.get("/:id", fotoC.detalls);
-fotoR.delete("/:id", validateToken, fotoC.esborra);
-fotoR.patch("/:id", validateToken, fotoC.modifica);
+R.post("/", validateToken, upload.array("avatar"), C.crea);
+//fotoR.post("/", upload.single("avatar"), C.crea);
+R.get("/", C.llista);
+R.get("/:id", C.detalls);
+R.delete("/:id", validateToken, C.esborra);
+R.patch("/:id", validateToken, C.modifica);
 
-export default fotoR;
+export default R;

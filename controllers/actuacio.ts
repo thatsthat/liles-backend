@@ -52,5 +52,24 @@ export const modifica = async (
   res: Response,
   next: NextFunction
 ) => {
-  return res.send("modifica actuacio");
+  let lloc = null;
+  if (req.body.lloc.length > 0) lloc = req.body.lloc;
+  let dataHora = null;
+  if (req.body.hora.length > 0) dataHora = req.body.hora;
+
+  let actuacio = await prisma.actuacio.update({
+    where: {
+      id: +req.params.id,
+    },
+    data: {
+      nom: req.body.nom,
+      //ciutat: { update: { data: { nom: req.body.ciutat } } },
+      ciutatId: +req.body.ciutatId,
+      lloc: lloc,
+      data: req.body.data + "T00:00:00Z",
+      dataHora: dataHora,
+    },
+  });
+
+  return res.send({ message: "modifica actuacio" });
 };

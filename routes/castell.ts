@@ -1,15 +1,15 @@
 import express from "express";
 import { validateToken } from "../middleware/auth";
-var castellR = express.Router();
+var R = express.Router();
 
 // Require controller modules.
-import * as castellC from "../controllers/castell";
+import * as C from "../controllers/castell";
 
-castellR.get("/tipus", castellC.tipus);
-castellR.post("/", validateToken, castellC.crea);
-castellR.get("/", castellC.llista);
-castellR.get("/:id", castellC.detalls);
-castellR.delete("/:id", validateToken, castellC.esborra);
-castellR.patch("/:id", validateToken, castellC.modifica);
+R.get("/tipus", C.tipus);
+R.post("/", validateToken, C.crea);
+R.get("/", C.llista);
+R.get("/:id", C.detalls);
+R.delete("/:id", validateToken, C.esborra);
+R.patch("/:id", validateToken, C.modifica);
 
-export default castellR;
+export default R;

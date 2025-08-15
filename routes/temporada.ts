@@ -1,15 +1,15 @@
 import express from "express";
 import { validateToken } from "../middleware/auth";
-var temporadaR = express.Router();
+var R = express.Router();
 
 // Require controller modules.
 // R = Router; C = Controller
-import * as temporadaC from "../controllers/temporada";
+import * as C from "../controllers/temporada";
 
-temporadaR.post("/", validateToken, temporadaC.crea);
-temporadaR.get("/", temporadaC.llista);
-temporadaR.get("/:id", temporadaC.detalls);
-temporadaR.delete("/:id", validateToken, temporadaC.esborra);
-temporadaR.patch("/:id", validateToken, temporadaC.modifica);
+R.post("/", validateToken, C.crea);
+R.get("/", C.llista);
+R.get("/:id", C.detalls);
+R.delete("/:id", validateToken, C.esborra);
+R.patch("/:id", validateToken, C.modifica);
 
-export default temporadaR;
+export default R;

@@ -10,6 +10,8 @@ import autenticacioR from "./routes/autenticacio";
 import temporadaR from "./routes/temporada";
 import actuacioR from "./routes/actuacio";
 import castellR from "./routes/castell";
+import ciutatR from "./routes/ciutat";
+
 import fotoR from "./routes/foto";
 import { validateToken } from "./middleware/auth";
 
@@ -18,8 +20,6 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-//app.use(nocache());
-//app.set("etag", false);
 app.use(cors({ origin: process.env.ORIGIN }));
 
 app.use("/", autenticacioR);
@@ -27,5 +27,6 @@ app.use("/temporada", temporadaR);
 app.use("/actuacio", actuacioR);
 app.use("/castell", castellR);
 app.use("/foto", fotoR);
+app.use("/ciutat", ciutatR);
 
 module.exports = app;
