@@ -13,6 +13,8 @@ export const crea = async (req: Request, res: Response, next: NextFunction) => {
 
   const results = await Promise.all(
     req.files.map(async (file) => {
+      let castellId = null;
+      if (req.body.castellId.length > 0) castellId = +req.body.castellId;
       const fileName = uuidv4() + ".jpg";
       const fileData = await supabase.storage
         .from("imatges")
@@ -29,7 +31,7 @@ export const crea = async (req: Request, res: Response, next: NextFunction) => {
         autorId: req.user.id,
         actuacioId: +req.body.actuacioId,
         collaId: +req.body.collaId,
-        castellId: +req.body.castellId,
+        castellId: castellId,
         url: urlData.data.publicUrl,
       };
       const foto = await prisma.foto.create({
