@@ -1,6 +1,6 @@
 import { body, validationResult } from "express-validator";
 import { Request, Response, NextFunction } from "express";
-import { PrismaClient } from "../generated/client";
+import { PrismaClient, Prisma } from "../generated/client";
 const prisma = new PrismaClient();
 
 const nomsCastell = [
@@ -48,16 +48,29 @@ export const crea = [
   async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.send(errors.array());
+      res.send(errors.array());
     } else {
       const castell = await prisma.castell.create({
         data: {
-          nom: req.body.nom,
+          tipusCastell: {
+            connect: {
+              id: req.body.tipusId,
+            },
+          },
+          actuacio: {
+            connect: {
+              id: req.body.actuacioId,
+            },
+          },
+          colla: {
+            connect: {
+              id: req.body.collaId,
+            },
+          },
           resultat: req.body.resultat,
-          actuacioId: req.body.actuacioId,
-        },
+        } satisfies Prisma.CastellCreateInput,
       });
-      return res.send(castell);
+      res.send(castell);
     }
   },
 ];
@@ -107,7 +120,7 @@ export const modifica = async (
   res: Response,
   next: NextFunction
 ) => {
-  return res.send("modifica castell");
+  res.send("modifica castell");
 };
 
 export const esborra = async (
@@ -115,5 +128,5 @@ export const esborra = async (
   res: Response,
   next: NextFunction
 ) => {
-  return res.send("Esborra castell");
+  res.send("Esborra castell");
 };

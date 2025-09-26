@@ -1,5 +1,5 @@
 export type Usuari = {
-  id?: number;
+  id: number;
   nom: string;
   correu: string;
   authenticationToken?: string | null;

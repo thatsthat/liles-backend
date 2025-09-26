@@ -36,7 +36,7 @@ export const detalls = async (
 };
 
 export const crea = async (req: Request, res: Response, next: NextFunction) => {
-  return res.send("crea actuacio");
+  res.send("crea actuacio");
 };
 
 export const esborra = async (
@@ -44,7 +44,7 @@ export const esborra = async (
   res: Response,
   next: NextFunction
 ) => {
-  return res.send("Esborra actuacio");
+  res.send("Esborra actuacio");
 };
 
 export const modifica = async (
@@ -71,5 +71,5 @@ export const modifica = async (
     },
   });
 
-  return res.send({ message: "modifica actuacio" });
+  res.send({ message: "modifica actuacio" });
 };
