@@ -9,7 +9,7 @@ var R = express.Router();
 // Require controller modules.
 import * as C from "../controllers/foto";
 
-R.post("/", validateToken, upload.array("avatar"), C.crea);
+R.post("/", validateToken, upload.single("avatar"), C.crea);
 //fotoR.post("/", upload.single("avatar"), C.crea);
 R.get("/", C.llista);
 R.get("/:id", C.detalls);
